@@ -1,3 +1,5 @@
+# connection informatoin funation 
+
 def get_connection_config(dbutils):
     """
     Build the PostgreSQL JDBC connection configuration
@@ -41,3 +43,22 @@ def get_connection_config(dbutils):
     }
 
     return jdbc_url, properties
+
+
+
+# ===============================================================================
+# reading databse from the connection 
+
+
+def read_table(spark, table_name, jdbc_url, properties):
+    """
+    Read one PostgreSQL table into a Spark DataFrame.
+    """
+    return(
+          spark.read
+          .format("jdbc")
+          .option("url",jdbc_url)
+          .option("dbtable",table_name)
+          .options(**properties)
+          .load()
+    )
